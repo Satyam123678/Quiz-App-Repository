@@ -1,0 +1,11 @@
+package com.quiz.quiz.model;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.util.List;
+
+public record CreateQuizRequest(
+        @NotBlank String title,
+        @NotEmpty List<Long> questionIds) {
+}
