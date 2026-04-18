@@ -37,7 +37,7 @@ public class QuizService {
 
     public Quiz createQuiz(CreateQuizRequest request) {
         List<Question> questions = request.questionIds().stream()
-                .map(questionClient::getQuestionById)
+                .map(this::fetchQuestion)
                 .toList();
 
         long quizId = idSequence.incrementAndGet();
@@ -55,5 +55,18 @@ public class QuizService {
 
     public Quiz getQuiz(Long id) {
         return quizzes.get(id);
+    }
+
+    private Question fetchQuestion(Long questionId) {
+        Question question;
+        try {
+            question = questionClient.getQuestionById(questionId);
+        } catch (RuntimeException ex) {
+            throw new IllegalStateException("Failed to fetch questionId=" + questionId + " from question-service", ex);
+        }
+        if (question == null) {
+            throw new IllegalStateException("Question service returned no data for questionId=" + questionId);
+        }
+        return question;
     }
 }

@@ -39,3 +39,8 @@ mvn -pl quiz-service spring-boot:run
 ```
 
 Kafka should be available at `localhost:9092` for event publishing.
+
+## Notes
+
+- Quizzes are stored in memory in `quiz-service` for this minimal sample and are reset on service restart.
+- Quiz creation is all-or-nothing: if any question cannot be fetched from `question-service`, the quiz is not created.
